@@ -217,7 +217,7 @@ output application/json
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="INFO" doc:name="Logger" doc:id="ac3d6503-093d-4de2-8cbe-71b5a8f77e4f" message='#["Movie Updated"]'/>
+		<logger level="INFO" doc:name="Logger" doc:id="ac3d6503-093d-4de2-8cbe-71b5a8f77e4f" message='#["Movie Updated Successfully"]'/>
 	</flow>
 	<flow name="deleteMovieByID" doc:id="dd3d2871-288c-4269-98a5-e903cbe6c908" >
 		<http:request method="DELETE" doc:name="Request at :/8082" doc:id="5387731b-78e5-42d3-a2f8-f0885a68c534" config-ref="HTTP_Request_configuration" path="/api/Movies/{ID}">
