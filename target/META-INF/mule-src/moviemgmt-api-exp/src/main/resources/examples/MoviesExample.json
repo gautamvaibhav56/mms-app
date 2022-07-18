@@ -1,0 +1,92 @@
+[
+  {
+    "ID": 1,
+    "code": "DRS",
+    "location": ["DLH", "MUM", "CHD", "IND","LKO"],
+    "movie_name": "Doctor Strange and Multiverse of Madness",
+    "show":
+    {
+      "time": ["0900HRS", "1300HRS"],
+      "movieType": "3D"
+    },
+    "duration": "134 Minutes",
+    "language": "English",
+    "seats":
+    {
+      "total": 80,
+      "available": 22
+    }
+  },
+  {
+    "ID": 2,
+    "code": "KGF",
+    "location": ["DLH", "MUM", "CHD", "IND","LKO"],
+    "movie_name": "KGF- Chapter 2",
+    "show":
+    {
+      "time": ["0900HRS", "1530HRS"],
+      "movieType": "3D"
+    },
+    "duration": "134 Minutes",
+    "language": "Hindi",
+    "seats":
+    {
+      "total": 80,
+      "available": 34
+    }
+  },
+  {
+    "ID": 3,
+    "code": "ABC",
+    "location": ["DLH", "MUM", "CHD", "IND","LKO"],
+    "movie_name": "ABC - Part 1",
+    "show":
+    {
+      "time": ["1300HRS", "1530HRS"],
+      "movieType": "3D"
+    },
+    "duration": "135 Minutes",
+    "language": "Hindi",
+    "seats":
+    {
+      "total": 80,
+      "available": 22
+    }
+  },
+  {
+    "ID": 4,
+    "code": "RRR",
+    "location": ["DLH", "MUM", "CHD", "IND","LKO"],
+    "movie_name": "RRR- Roar,Rise,Revolt",
+    "show":
+    {
+      "time": ["0900HRS", "1530HRS"],
+      "movieType": "3D"
+    },
+    "duration": "120 Minutes",
+    "language": "Telugu",
+    "seats":
+    {
+      "total": 60,
+      "available": 34
+    }
+  },
+  {
+    "ID": 5,
+    "code": "STR",
+    "location": ["DLH", "MUM", "CHD", "IND","LKO"],
+    "movie_name": "STR- Star wars",
+    "show":
+    {
+      "time": ["1100HRS", "1500HRS"],
+      "movieType": "3D"
+    },
+    "duration": "134 Minutes",
+    "language": "English",
+    "seats":
+    {
+      "total": 70,
+      "available": 30
+    }
+  }
+]

@@ -1,0 +1,14 @@
+form: FIXEDWIDTH
+id: 'MovieIDExampleDWL'
+name: 'MovieIDExampleDWL'
+values: 
+- { name: 'ID', usage: M, type: Integer, length: 10 }
+- { name: 'code', usage: M, type: String, length: 10 }
+- { name: 'location', usage: M, type: String, length: 50 }
+- { name: 'movieName', usage: M, type: String, length: 50 }
+- { name: 'showTime', usage: M, type: String, length: 50 }
+- { name: 'movieType', usage: M, type: String, length: 10 }
+- { name: 'duration', usage: M, type: String, length: 20 }
+- { name: 'language', usage: M, type: String, length: 10 }
+- { name: 'totalSeats', usage: M, type: Integer, length: 10 }
+- { name: 'availableSeats', usage: M, type: Integer, length: 10 }

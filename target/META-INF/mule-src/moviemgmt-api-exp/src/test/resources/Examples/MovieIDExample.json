@@ -1,0 +1,13 @@
+{
+    "ID": 1,
+    "code": "DRS",
+    "location": ["DLH", "MUM", "CHD", "IND","LKO"],
+    "movie_name": "Doctor Strange and Multiverse of Madness",
+    "showTime": ["0900HRS", "1300HRS"],
+    "movieType": "3D",
+    "duration": "134 Minutes",
+    "language": "English",
+    "totalSeats": 80,
+    "availableSeats": 22
+    
+  }

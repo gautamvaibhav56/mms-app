@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+	
+	<flow name="getMovies" doc:id="b7d528e3-cb96-4be9-9994-7d6e00defdf6" >
+		<set-variable value="#[message.attributes.queryParams]" doc:name="Set Variable qp" doc:id="036cfe08-b460-4eb2-8ecb-830ea08be8c3" variableName="qp"/>
+		<validation:is-time doc:name="Is time - Date format Validator" doc:id="ab617d17-db74-46ae-a2a2-a10f66c44368" time="#[vars.qp.date]" pattern="ddMMyyyy"/>
+		<validation:is-true doc:name="Is true - Future date Validator" doc:id="1d0a4679-88be-4b1f-aec8-068d597e9dac" expression='#[(vars.qp.date as Date {format: "ddMMyyyy"} &gt; now() as Date {format: "ddMMyyyy"}) and (vars.qp.date as Date {format: "ddMMyyyy"} &lt; (now() as Date) + |P7D| as Period {format: "ddMMyyyy"})]' message="#['Shows available for next 7 days only. Please select the date accordingly']"/>
+		<choice doc:name="Choice" doc:id="05bbb85e-867f-423f-9eb9-c0ae388b752e" >
+			<when expression="#[((vars.qp.movie_code != null) and (vars.qp.location != null) and (vars.qp.show_time != null))]" >
+				<http:request method="GET" doc:name="Request at :/8082" doc:id="c1b562ac-85a7-4981-b263-1c3d8c52df54" config-ref="HTTP_Request_configuration" path="/api/Movies">
+			<http:query-params><![CDATA[#[output application/java
+---
+{
+	"date" : vars.qp.date,
+	"show_time" : vars.qp.show_time,
+	"movie_code" : vars.qp.movie_code,
+	"location" : vars.qp.location
+}]]]></http:query-params>
+		</http:request>
+			</when>
+			<when expression="#[((vars.qp.movie_code != null) and (vars.qp.location != null))]">
+				<http:request method="GET" doc:name="Request at :/8082" doc:id="ce57ac22-887b-40ea-bbc5-8f8e9780ac9e" config-ref="HTTP_Request_configuration" path="/api/Movies">
+			<http:query-params><![CDATA[#[output application/java
+---
+{
+	"date" : vars.qp.date,
+	"movie_code" : vars.qp.movie_code,
+	"location" : vars.qp.location
+}]]]></http:query-params>
+		</http:request>
+			</when>
+			<when expression="#[((vars.qp.movie_code != null) and (vars.qp.show_time != null))]">
+				<http:request method="GET" doc:name="Request at :/8082" doc:id="f6fe4e61-e143-432b-8444-775a53b4f8e8" config-ref="HTTP_Request_configuration" path="/api/Movies">
+			<http:query-params><![CDATA[#[output application/java
+---
+{
+	"date" : vars.qp.date,
+	"show_time" : vars.qp.show_time,
+	"movie_code" : vars.qp.movie_code
+}]]]></http:query-params>
+		</http:request>
+			</when>
+			<when expression="#[((vars.qp.location != null) and (vars.qp.show_time != null))]">
+				<http:request method="GET" doc:name="Request at :/8082" doc:id="8dd10130-f9c3-4428-8898-228985140ebf" config-ref="HTTP_Request_configuration" path="/api/Movies">
+			<http:query-params><![CDATA[#[output application/java
+---
+{
+	"date" : vars.qp.date,
+	"show_time" : vars.qp.show_time,
+	"location" : vars.qp.location
+}]]]></http:query-params>
+		</http:request>
+			</when>
+			<when expression="#[(vars.qp.location != null)]">
+				<http:request method="GET" doc:name="Request at :/8082" doc:id="ec491a3b-629d-4bad-b13d-5ec976ab28ba" config-ref="HTTP_Request_configuration" path="/api/Movies">
+			<http:query-params><![CDATA[#[output application/java
+---
+{
+	"date" : vars.qp.date,
+	"location" : vars.qp.location
+}]]]></http:query-params>
+		</http:request>
+			</when>
+			<when expression="#[(vars.qp.show_time != null)]">
+				<http:request method="GET" doc:name="Request at :/8082" doc:id="d6e461b6-d16e-4731-9453-9798cf865727" config-ref="HTTP_Request_configuration" path="/api/Movies">
+			<http:query-params><![CDATA[#[output application/java
+---
+{
+	"date" : vars.qp.date,
+	"show_time" : vars.qp.show_time
+}]]]></http:query-params>
+		</http:request>
+			</when>
+			<when expression="#[(vars.qp.movie_code != null)]">
+				<http:request method="GET" doc:name="Request at :/8082" doc:id="0d294077-3b01-44b3-9661-b0d662c74859" config-ref="HTTP_Request_configuration" path="/api/Movies">
+			<http:query-params><![CDATA[#[output application/java
+---
+{
+	"date" : vars.qp.date,
+	"movie_code" : vars.qp.movie_code
+}]]]></http:query-params>
+		</http:request>
+			</when>
+			<otherwise >
+				<http:request method="GET" doc:name="Request at :/8082" doc:id="a35c8fa4-5e4b-439a-8d73-2e091083d811" config-ref="HTTP_Request_configuration" path='/api/Movies'>
+					<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"date" : vars.qp.date
+}]]]></http:query-params>
+
+		</http:request>
+			</otherwise>
+		</choice>
+		<ee:transform doc:name="Transform Message" doc:id="dd1d88d6-32f7-4637-b6c4-3f13b57d3587">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+if(payload==[])
+{
+	message: "No such data"
+}
+else
+{
+	message: payload
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="aa6d6eda-6254-4b48-b68d-f0bb79629cf8" message="#[payload]"/>
+		<error-handler>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate - Is Time" doc:id="0f731bc3-e998-47cc-980c-b959b7af025c" type="VALIDATION:INVALID_TIME">
+				<ee:transform doc:name="Transform Message" doc:id="e38b086c-b942-4c3e-83a0-13e62bb480e7" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message : 'Invalid date format , please enter like 02062022'
+}
+]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<set-variable value="#[400]" doc:name="Set Variable" doc:id="8afaead6-c4a8-44eb-a276-afc75ae8305b" variableName="httpStatus"/>
+			</on-error-propagate>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate - Is True" doc:id="a388dd15-1490-4544-b2ae-2ca57781d7e1" type="VALIDATION:INVALID_BOOLEAN">
+				<ee:transform doc:name="Transform Message" doc:id="de8838db-cf42-424a-9f1b-34e58282a9dd" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+if(error.description==null)
+{
+	message: 'Select dates from tomorrow till next 7 days only '
+}
+else
+{
+	message: error.description
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<set-variable value="400" doc:name="Set Variable" doc:id="92ee6fb5-105e-4a1c-a56b-a804a7ee7ad4" variableName="httpStatus"/>
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+	<flow name="getMovieByID" doc:id="5bc05308-a810-4cf4-ad50-6f0bc5bde977" >
+		<http:request method="GET" doc:name="Request at :/8082" doc:id="bef9919f-e9c8-4bd4-b57f-5221e91c76ab" config-ref="HTTP_Request_configuration" path="/api/Movies/{ID}">
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	"ID" : message.attributes.uriParams.ID
+}]]]></http:uri-params>
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"date" : vars.qp.date
+}]]]></http:query-params>
+		</http:request>
+		<ee:transform doc:name="Transform Message" doc:id="afae2c6d-048a-4775-ad98-9757b01e1352" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="89647f91-62ae-496c-ab8c-cde47a18ee15" message="#[payload]"/>
+	</flow>
+	<flow name="postMovie" doc:id="4a1fa8e6-a342-4168-a854-075e10c4e34c" >
+		<http:request method="POST" doc:name="Request at :/8082" doc:id="4bae7e02-4d3c-41b8-8b36-df488d984e2d" config-ref="HTTP_Request_configuration" path="/api/Movies">
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"client_secret" : message.attributes.headers.client_secret,
+	"client_id" : message.attributes.headers.client_id
+}]]]></http:headers>
+		</http:request>
+		<set-payload value='#["Movie Added Successfully"]' doc:name="Set Payload" doc:id="df37ba57-6527-4877-bd21-bb4016ccca10" />
+		<ee:transform doc:name="Transform Message" doc:id="b4f02eae-c8e0-48ae-a424-e67540452198" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="07ee2eec-cd33-4cc5-af5c-e4183ee98992" message='#[payload]'/>
+	</flow>
+	<flow name="putMovieByID-Update" doc:id="bcb35261-c01f-4148-882d-e3ddbcf7092f" >
+		<http:request method="PUT" doc:name="Request at :/8082" doc:id="fe49c534-7f59-41e0-9c6d-f0b1fe4b3fb6" config-ref="HTTP_Request_configuration" path="/api/Movies/{ID}">
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"client_secret" : message.attributes.headers.client_secret,
+	"client_id" : message.attributes.headers.client_id
+}]]]></http:headers>
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	"ID" : message.attributes.uriParams.ID
+}]]]></http:uri-params>
+		</http:request>
+		<ee:transform doc:name="Transform Message" doc:id="4a9223ce-ba1a-432d-a482-953ff65690c4" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message :"Movie Updated Successfully"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="ac3d6503-093d-4de2-8cbe-71b5a8f77e4f" message='#["Movie Updated"]'/>
+	</flow>
+	<flow name="deleteMovieByID" doc:id="dd3d2871-288c-4269-98a5-e903cbe6c908" >
+		<http:request method="DELETE" doc:name="Request at :/8082" doc:id="5387731b-78e5-42d3-a2f8-f0885a68c534" config-ref="HTTP_Request_configuration" path="/api/Movies/{ID}">
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"client_secret" : "123",
+	"client_id" : "123"
+}]]]></http:headers>
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	"ID" : message.attributes.uriParams.ID
+}]]]></http:uri-params>
+		</http:request>
+		<set-payload value='#["Movie Deleted"]' doc:name="Set Payload" doc:id="69cc0689-f5d4-4a84-b64b-a9075168d52e" />
+		<logger level="INFO" doc:name="Logger" doc:id="d05bf7f6-305e-4231-8b5e-486374cc8a5b" message="#[payload]"/>
+	</flow>
+</mule>
